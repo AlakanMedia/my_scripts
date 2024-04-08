@@ -3,6 +3,8 @@
 #include <unistd.h>
 #include <sys/wait.h>
 
+#define MAX_CHARACTERS 20
+
 int main()
 {
     int df_1[2];
@@ -23,15 +25,9 @@ int main()
     dup2(df_1[0], STDIN_FILENO);
     close(df_1[0]);
 
-    char buffer[20];
-    read(STDIN_FILENO, buffer, sizeof(buffer));
-    
-    for (int i = 0; i < 20; i++)
-        if (buffer[i] == '\n')
-        {
-            buffer[i] = '\0';
-            break;
-        }
+    char buffer[MAX_CHARACTERS];
+    int num_characters = read(STDIN_FILENO, buffer, sizeof(buffer));
+    buffer[--num_characters] = '\0';
     
     int max_brightness = atoi(buffer);
 
@@ -49,15 +45,9 @@ int main()
 
     close(df_1[1]);
 
-    read(STDIN_FILENO, buffer, sizeof(buffer));
+    num_characters = read(STDIN_FILENO, buffer, sizeof(buffer));
+    buffer[--num_characters] = '\0';
     
-    for (int i = 0; i < 20; i++)
-        if (buffer[i] == '\n')
-        {
-            buffer[i] = '\0';
-            break;
-        }
-
     int current_brightness = atoi(buffer);
 
     printf("%d\n", (current_brightness * 100) / max_brightness);
