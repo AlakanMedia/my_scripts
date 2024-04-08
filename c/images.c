@@ -89,9 +89,9 @@ int main()
     {
         if (strlen(buffer) <= 1)
             return 0;
-
-        if (strncmp(buffer, "usb", 3) == 0)
+        else if (strncmp(buffer, "usb", 3) == 0)
             execlp("nsxiv", "nsxiv", usb_images_path, NULL); 
+        else
         {
             strncat(images_path, buffer, num_characters + 1);
             execlp("nsxiv", "nsxiv", images_path, NULL); 
